@@ -1,0 +1,103 @@
+<template>
+    <lightning-card>
+        <div class="slds-grid slds-p-around_medium slds-wrap">
+            <!-- Choose Object Combobox -->
+            <div class="slds-col slds-size_12-of-12">
+                <lightning-combobox
+                    name="Object List"
+                    label="Choose Object"
+                    value={value}
+                    placeholder="Select Progress"
+                    options={objectOptions}
+                    onchange={handleObject} ></lightning-combobox>
+            </div>
+            <!-- Choose Fields Box -->
+            <div class="slds-col slds-size_12-of-12 slds-m-top_medium">
+                <lightning-dual-listbox name="fields"
+                        label="Select Fields"
+                        source-label="Available"
+                        selected-label="Selected"
+                        field-level-help="Select your preferred fields"
+                        options={fieldOptions}
+                        onchange={handleFields}>
+                </lightning-dual-listbox>
+            </div>
+
+            <!-- Button for fetching records -->
+            <div class="slds-col slds-size_12-of-12 slds-m-top_medium">
+                <lightning-button variant="Brand" label="Fetch Records" onclick={fetchRecords} class="slds-align_absolute-center slds-m-top_medium"></lightning-button>
+            </div>
+
+            <!-- Fetched records will be rendered here -->
+            <div class="slds-col slds-size_12-of-12 slds-m-top_medium">
+                <template if:true={fetchFlag}>
+                    
+                    <div class="slds-grid slds-wrap">
+                        <!-- filter Options Combobox -->
+                        <div class="slds-col slds-size_3-of-12 slds-m-right_medium">
+                            <lightning-combobox
+                                name="Filter List"
+                                label="Filter by"
+                                placeholder="Select Progress"
+                                options={filterOptions}
+                                onchange={handleFilters} >
+                            </lightning-combobox>
+                        </div>
+                        <!-- filter Options Operators Combobox -->
+                        <div class="slds-col slds-size_3-of-12 slds-m-right_medium">
+                            <lightning-combobox
+                                name="Operator List"
+                                label="Operator"
+                                placeholder="Select Operator"
+                                options={operatorOptions}
+                                onchange={handleOperators} >
+                            </lightning-combobox>
+                        </div>
+                        <!-- filter Options Expression Combobox -->
+                        <div class="slds-col slds-size_3-of-12">
+                            <lightning-input
+                                label="Expression"
+                                placeholder="Enter Expression" 
+                                data-id="exp"
+                            >
+                            </lightning-input>
+                        </div>
+                        <!-- buttons -->
+                        <div class="slds-col">
+                            <!-- filter button -->
+                            <button
+                                onclick={filterRecords} 
+                                class="slds-m-left_medium" 
+                                style="margin-top: 1.3rem; background-color: #0176D3;border: 0;border-radius: 5px;padding: 7px 15px;color: white;" 
+                            >Filter</button>
+                            
+                            <!-- clear filter button -->
+                            <button
+                                onclick={clearFilter} 
+                                class="slds-m-left_medium" 
+                                style="margin-top: 1.3rem; background-color: grey;border: 0;border-radius: 5px;padding: 7px 15px;color: white;float:right;" 
+                            >Clear Filter</button>
+
+                        </div>
+                        <div class="slds-col slds-size_12-of-12 slds-m-top_medium">
+                            <lightning-datatable
+                                key-field="id"
+                                data={data}
+                                columns={columns} 
+                                data-id="dataTable" 
+                                load-more-offset="20" 
+                                onloadmore={handleLoadMore} 
+                                enable-infinite-loading 
+                                onrowselection={getSelectedItem}>
+                            </lightning-datatable>
+                        </div>
+                        {loadMoreStatus}
+                        <div class="slds-col slds-size_12-of-12">
+                            <lightning-button variant="Brand" label="Export Data" onclick={exportData} class="slds-align_absolute-center slds-m-top_medium"></lightning-button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </lightning-card>
+</template>
